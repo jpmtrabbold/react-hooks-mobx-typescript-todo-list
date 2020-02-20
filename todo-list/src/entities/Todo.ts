@@ -1,6 +1,5 @@
 import { observable } from 'mobx'
 import moment from 'moment'
-import { assignFromObjectToObject } from 'util/util'
 
 export default class Todo {
     constructor(description?: string) {

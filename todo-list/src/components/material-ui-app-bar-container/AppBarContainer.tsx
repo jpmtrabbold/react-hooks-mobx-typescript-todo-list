@@ -11,6 +11,7 @@ interface AppBarContainerProps {
     leftButtonIcon?: React.ReactNode
     leftButtonOnClick?: () => any
     rightButtons?: React.ReactNode[]
+    style?: React.CSSProperties
 }
 
 const useStyles = makeStyles(theme => ({
@@ -42,7 +43,7 @@ const useStyles = makeStyles(theme => ({
 export const AppBarContainer = observer((props: React.PropsWithChildren<AppBarContainerProps>) => {
     const classes = useStyles()
     return (
-        <div className={classes.root}>
+        <div className={classes.root} style={props.style}>
             <AppBar position="fixed" >
                 <Toolbar className={classes.toolbar}>
                     {!!props.leftButtonIcon && (

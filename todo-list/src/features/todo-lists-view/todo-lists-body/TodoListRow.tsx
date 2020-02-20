@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import { observer, useLocalStore } from "mobx-react-lite"
-import { TodoListStoreContext } from "../TodoListStore"
+import { TodoListStoreContext } from "../TodoListsStore"
 import ListItem from "@material-ui/core/ListItem"
 import ListItemText from "@material-ui/core/ListItemText"
 import ListItemIcon from '@material-ui/core/ListItemIcon'
@@ -14,20 +14,27 @@ interface TodoListRowProps {
     nestingLevel?: number
 }
 export const TodoListRow = observer(({ list, nestingLevel = 0 }: TodoListRowProps) => {
-
     const store = useContext(TodoListStoreContext)
     const theme = useTheme()
 
     const localStore = useLocalStore(source => ({
         get listItemStyle() {
             if (source.nestingLevel) {
-                return { paddingLeft: theme.spacing(nestingLevel*4) }
-            } 
+                return { paddingLeft: theme.spacing(nestingLevel * 4) }
+            }
+            return undefined
+        },
+        onClick: () => {
+            store.selectTodoList(source.list)
         }
-    }), { nestingLevel })
+    }), { list, nestingLevel })
 
     return <>
-        <ListItem style={localStore.listItemStyle} button>
+        <ListItem
+            style={localStore.listItemStyle}
+            button onClick={localStore.onClick}
+            selected={list === store.selectedTodoList}
+        >
             <ListItemIcon>
                 <ListIcon />
             </ListItemIcon>
