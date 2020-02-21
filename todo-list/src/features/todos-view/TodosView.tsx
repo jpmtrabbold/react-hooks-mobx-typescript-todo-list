@@ -1,12 +1,11 @@
 import React, { useContext } from 'react'
 import { observer } from 'mobx-react-lite'
-import { TodoListStoreContext } from 'features/todo-lists-view/TodoListsStore'
+import { RootStoreContext } from 'features/RootStore'
 import Paper from '@material-ui/core/Paper'
 import List from '@material-ui/core/List'
 import makeStyles from '@material-ui/core/styles/makeStyles'
 import { TodosList } from './TodosList'
 import { NewTodo } from './todo/NewTodo'
-import Divider from '@material-ui/core/Divider'
 import Typography from '@material-ui/core/Typography'
 
 interface TodosViewProps {
@@ -24,10 +23,10 @@ const useStyles = makeStyles(theme => ({
 
 export const TodosView = observer((props: TodosViewProps) => {
     const classes = useStyles()
-    const rootStore = useContext(TodoListStoreContext)
+    const rootStore = useContext(RootStoreContext)
 
     if (!rootStore.selectedTodoList) {
-        return <>Please select a list</>
+        return null
     }
 
     return <>
@@ -37,7 +36,7 @@ export const TodosView = observer((props: TodosViewProps) => {
                 <TodosList done={false} />
             </List>
         </Paper>
-        {rootStore.hasDoneTasksOnCurrentList && (<>
+        {rootStore.hasDoneTodosOnCurrentList && (<>
             <br />
             <Typography className={classes.typography} variant='h6'>Completed: </Typography>
             <br />

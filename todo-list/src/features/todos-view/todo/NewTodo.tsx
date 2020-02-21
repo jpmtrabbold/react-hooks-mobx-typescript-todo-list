@@ -1,17 +1,16 @@
-import React, { useContext, useRef, useLayoutEffect } from 'react'
+import React, { useContext } from 'react'
 import { observer, useLocalStore } from 'mobx-react-lite'
 import Todo from 'entities/Todo'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
-import { TodoListStoreContext } from 'features/todo-lists-view/TodoListsStore'
+import { RootStoreContext } from 'features/RootStore'
 import InputBase from '@material-ui/core/InputBase'
 import { InputProps } from 'components/input-props'
 import Button from '@material-ui/core/Button'
-import useInitialMount from 'hooks/useInitialMount'
+import { focusWithStartingCaret } from 'components/util/util'
 
 export const NewTodo = observer(() => {
-    const rootStore = useContext(TodoListStoreContext)
-    const inputRef = useRef<HTMLInputElement | null>(null)
+    const rootStore = useContext(RootStoreContext)
 
     const store = useLocalStore(() => ({
         description: "",
@@ -24,30 +23,29 @@ export const NewTodo = observer(() => {
         },
         keyPressAdd: (e: React.KeyboardEvent<HTMLTextAreaElement | HTMLInputElement>) => {
             if (e.key === 'Enter') {
-                store.add()
+                store.canAdd && store.add()
+            } else if (e.key === 'ArrowDown') {
+                if (rootStore.notDoneTodosOnCurrentList.length > 0) {
+                    focusWithStartingCaret(rootStore.notDoneTodosOnCurrentList[0].inputRef.current)
+                } else if (rootStore.doneTodosOnCurrentList.length > 0) {
+                    focusWithStartingCaret(rootStore.doneTodosOnCurrentList[0].inputRef.current)
+                }
             }
         }
     }))
-    
-    useLayoutEffect(() => {
-        inputRef.current!.focus()
-    }, [rootStore.selectedTodoList])
 
     const input = (
         <InputProps stateObject={store} propertyName='description'>
             <InputBase
-                inputProps={{ ref: inputRef }}
+                inputProps={{ ref: rootStore.newTodoInputRef }}
                 placeholder="Add new to-do..."
-                onKeyUp={(store.canAdd && store.keyPressAdd) || undefined}
-                fullWidth endAdornment={(
-                    <>
-                        {store.canAdd && (
-                            <Button size='small' color='primary' onClick={store.add}>
-                                Add
-                            </Button>
-                        )}
-                    </>
-                )}
+                onKeyUp={store.keyPressAdd}
+                fullWidth
+                endAdornment={(store.canAdd && (
+                    <Button size='small' color='primary' onClick={store.add}>
+                        Add
+                    </Button>
+                )) || undefined}
             />
         </InputProps>
     )

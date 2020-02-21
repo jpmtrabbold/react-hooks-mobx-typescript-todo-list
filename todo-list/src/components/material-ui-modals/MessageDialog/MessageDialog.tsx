@@ -8,6 +8,7 @@ import { useLocalStore, observer } from "mobx-react-lite"
 import { MessageDialogStore, MessageDialogStoreContext } from "./MessageDialogStore"
 import { MessageDialogNormalActions } from "./MessageDialogNormalActions"
 import { MessageDialogBiggerActions } from "./MessageDialogBiggerActions"
+import { TransitionProps } from "@material-ui/core/transitions/transition"
 
 export type ActionColorType = "inherit" | "primary" | "secondary"
 
@@ -43,9 +44,10 @@ export type MessageDialogProps = MessageOptions & {
    children?: React.ReactNode;
    open?: boolean
    onClose?: () => any
+   TransitionComponent?: React.ComponentType<TransitionProps>;
 }
 
-export const MessageDialog = observer(({ actions, title, content, variant, container, resolve, onClose, open, children, ...dialogProps }: MessageDialogProps) => {
+export const MessageDialog = observer(({ actions, title, content, variant, container, resolve, onClose, open, children, TransitionComponent, ...dialogProps }: MessageDialogProps) => {
    const store = useLocalStore(source => new MessageDialogStore(source), { actions, title, content, variant, container, resolve, onClose, open })
 
    useEffect(() => {
@@ -75,6 +77,7 @@ export const MessageDialog = observer(({ actions, title, content, variant, conta
             onClose={store.handleDirectClose}
             aria-labelledby="alert-dialog-title"
             aria-describedby="alert-dialog-description"
+            TransitionComponent={TransitionComponent}
          >
             {!!title &&
                <DialogTitle id="alert-dialog-title">

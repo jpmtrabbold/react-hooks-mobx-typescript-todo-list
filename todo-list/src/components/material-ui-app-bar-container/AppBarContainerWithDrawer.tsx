@@ -9,12 +9,14 @@ import useMediaQuery from "@material-ui/core/useMediaQuery"
 import Drawer from '@material-ui/core/Drawer';
 import MenuIcon from '@material-ui/icons/Menu'
 import useElementSize from "hooks/useElementSize"
-interface AppBarContainerWithDrawerProps {
+import { AppBarContainerWithDrawerStore } from "./AppBarContainerWithDrawerStore"
+export interface AppBarContainerWithDrawerProps {
     title?: React.ReactNode
     rightButtons?: React.ReactNode[]
     style?: React.CSSProperties
     drawer?: React.ReactNode
     initialDrawerOpen?: boolean
+    setStore?: (store: AppBarContainerWithDrawerStore) => any
 }
 
 const useStyles = makeStyles(theme => ({
@@ -56,51 +58,24 @@ export const AppBarContainerWithDrawer = observer((props: React.PropsWithChildre
     const drawerRef = useRef<HTMLDivElement | null>(null)
     const drawerSize = useElementSize(drawerRef.current)
 
-    const store = useLocalStore(source => ({
-        open: true,
-        setBigScreen(big: boolean) {
-            this.setOpen(big)
-            this.permanent = big
-        },
-        setOpen(open: boolean) {
-            this.open = open
-        },
-        get drawerStyle(): React.CSSProperties {
-            return {
-                minWidth: 250
-            }
-        },
-        permanent: false,
-        onClose: () => {
-            store.open = false
-        },
-        drawerToggle: () => {
-            store.open = !store.open
-        },
-        get childrenDivStyle(): React.CSSProperties | undefined {
-            if (store.permanent && store.open) {
-                return { marginLeft: source.drawerSize.width }
-            }
-            return undefined
-        }
-    }), { bigScreen, ...props, drawerSize })
+    const store = useLocalStore(source => new AppBarContainerWithDrawerStore(source), { bigScreen, ...props, drawerSize })
 
     useEffect(() => {
         setTimeout(() => {
-            store.setOpen((props.initialDrawerOpen !== undefined ? props.initialDrawerOpen : true))
+            if (props.initialDrawerOpen !== undefined) {
+                store.setOpen(props.initialDrawerOpen!)
+            }
         })
     }, [props.initialDrawerOpen, store])
 
     useEffect(() => {
-        if (bigScreen) {
-            setTimeout(() => {
+        setTimeout(() => {
+            if (bigScreen) {
                 store.setBigScreen(true)
-            })
-        } else {
-            setTimeout(() => {
+            } else {
                 store.setBigScreen(false)
-            })
-        }
+            }
+        })
     }, [bigScreen, store])
 
     return (<>
