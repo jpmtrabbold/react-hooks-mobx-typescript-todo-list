@@ -50,11 +50,7 @@ export class RootStore {
             this.newTodoFocus()
         });
     }
-
     @observable selectedTodoList?: TodoList
-    @action addTodoToCurrentList(todo: Todo) {
-        this.selectedTodoList?.todos.push(todo)
-    }
 
     @computed get titlePrefix() {
         return (this.selectedTodoList && (" - " + this.selectedTodoList.name)) || ""
@@ -65,13 +61,22 @@ export class RootStore {
     }
 
     @action deleteFolder = async (listFolder: TodoListFolder) => {
-        if (await messageYesNo({ title: "Folder deletion", content: `Do you confirm the '${listFolder.name}' folder deletion?` })) {
+
+        if (await messageYesNo({
+            title: "Folder deletion",
+            content: `Do you confirm the '${listFolder.name}' folder deletion?`
+        })) {
             removeItemFromArray(this.todoListsAndFolders, listFolder)
             snackbar({ title: `The folder '${listFolder.name}' was deleted successfully`, anchorOrigin: { vertical: 'bottom', horizontal: 'right' }, variant: 'success' })
         }
     }
+
     @action deleteList = async (list: TodoList, folder?: TodoListFolder) => {
-        if (await messageYesNo({ title: "List deletion", content: `Do you confirm the '${list.name}' list deletion?` })) {
+
+        if (await messageYesNo({
+            title: "List deletion",
+            content: `Do you confirm the '${list.name}' list deletion?`
+        })) {
             removeItemFromArray((folder ? folder.lists : this.todoListsAndFolders), list)
             if (list === this.selectedTodoList) {
                 this.selectedTodoList = undefined
@@ -83,22 +88,12 @@ export class RootStore {
     @action addNewList(list: TodoList, folder?: TodoListFolder) {
         if (folder) {
             folder.lists.push(list)
+            this.appBarStore?.setDrawerWidth()
+
         } else {
             this.todoListsAndFolders.push(list)
         }
-
-    }
-
-    @computed get doneTodosOnCurrentList() {
-        return this.selectedTodoList?.todos.filter(t => t.done) || []
-    }
-
-    @computed get notDoneTodosOnCurrentList() {
-        return this.selectedTodoList?.todos.filter(t => !t.done) || []
-    }
-
-    @computed get hasDoneTodosOnCurrentList() {
-        return this.doneTodosOnCurrentList.length > 0
+        this.selectTodoList(list)
     }
 
     newTodoInputRef = createRef<HTMLInputElement | null>()

@@ -3,9 +3,11 @@ import { observer } from 'mobx-react-lite'
 import { RootStoreContext } from 'features/RootStore'
 import { TodoRow } from './todo/TodoRow'
 import Divider from '@material-ui/core/Divider'
+import Todo from 'entities/Todo'
 
 interface TodosListProps {
     done: boolean
+    todos: Todo[]
 }
 export const TodosList = observer((props: TodosListProps) => {
     const rootStore = useContext(RootStoreContext)
@@ -14,11 +16,9 @@ export const TodosList = observer((props: TodosListProps) => {
         return null
     }
 
-    const list = (props.done ? rootStore.doneTodosOnCurrentList : rootStore.notDoneTodosOnCurrentList)
-    
     return (<>
-        {list.map((t, index) => (
-            <React.Fragment key={index}>
+        {props.todos.map((t, index) => (
+            <React.Fragment key={t.id}>
                 {(!props.done || index > 0) && <Divider />}
                 <TodoRow todo={t} />
             </React.Fragment>

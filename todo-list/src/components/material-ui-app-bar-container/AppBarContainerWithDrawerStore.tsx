@@ -34,7 +34,9 @@ export class AppBarContainerWithDrawerStore {
     }
 
     setDrawerWidth = () => {
-        this.drawerWidth = this.drawer?.clientWidth ?? undefined
+        setTimeout(() => {
+            this.drawerWidth = this.drawer?.clientWidth ?? undefined   
+        });
     }
     
     bigScreenChanged = (change: IValueDidChange<boolean>) => {

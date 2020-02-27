@@ -14,7 +14,7 @@ export const Main = observer(() => {
                 drawer={<TodoListsDrawerContent />}
                 setStore={store.setAppBarStore}
             >
-                <TodosView />
+                {!!store.selectedTodoList && <TodosView todos={store.selectedTodoList.todos}/>}
             </AppBarContainerWithDrawer >
         </RootStoreContext.Provider>
     )
