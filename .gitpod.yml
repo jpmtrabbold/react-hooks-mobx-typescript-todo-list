@@ -1,3 +1,4 @@
 tasks:
-  - init: npm start
-    command: npm install
+  - init: npm install
+    before: cd todo-list
+    command: npm start
