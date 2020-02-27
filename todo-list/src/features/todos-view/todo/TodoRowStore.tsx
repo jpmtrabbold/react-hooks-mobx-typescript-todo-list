@@ -112,6 +112,6 @@ export class TodoRowStore {
 }
 const rootStore = new RootStore()
 const todo = new Todo()
-const todosStore = new TodosStore({ todos: [] })
+const todosStore = new TodosStore({ todosContainer: { todos: [] } })
 export const TodoStoreContext = createContext(new TodoRowStore({ todo, rootStore, todosStore }))
 

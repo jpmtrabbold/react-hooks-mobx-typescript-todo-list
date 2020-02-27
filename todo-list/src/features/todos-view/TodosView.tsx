@@ -20,7 +20,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export interface TodosViewProps {
-    todos: Todo[]
+    todosContainer: { todos: Todo[] }
 }
 
 export const TodosView = observer((props: TodosViewProps) => {

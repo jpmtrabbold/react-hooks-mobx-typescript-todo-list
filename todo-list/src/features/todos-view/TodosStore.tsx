@@ -11,18 +11,18 @@ export class TodosStore {
     sp: TodosViewProps
 
     @action addTodoToCurrent(todo: Todo) {
-        this.sp.todos.push(todo)
+        this.sp.todosContainer.todos.push(todo)
     }
 
     @action deleteTodo = (todo: Todo) => {
-        removeItemFromArray(this.sp.todos, todo)
+        removeItemFromArray(this.sp.todosContainer.todos, todo)
     }
     @computed get doneTodosOnCurrentList() {
-        return this.sp.todos.filter(t => t.done) || []
+        return this.sp.todosContainer.todos.filter(t => t.done) || []
     }
 
     @computed get notDoneTodosOnCurrentList() {
-        return this.sp.todos.filter(t => !t.done) || []
+        return this.sp.todosContainer.todos.filter(t => !t.done) || []
     }
 
     @computed get hasDoneTodosOnCurrentList() {
@@ -30,4 +30,4 @@ export class TodosStore {
     }
 }
 
-export const TodosStoreContext = createContext(new TodosStore({ todos: [] }))
+export const TodosStoreContext = createContext(new TodosStore({ todosContainer: { todos: [] } }))

@@ -1,5 +1,4 @@
 import { observable, action } from 'mobx'
-import moment from 'moment'
 import { createRef } from 'react'
 
 let id = 0
