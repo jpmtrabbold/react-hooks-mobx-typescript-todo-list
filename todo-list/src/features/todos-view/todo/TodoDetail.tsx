@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import { observer } from 'mobx-react-lite'
-import { TodoStoreContext } from './TodoStore'
+import { TodoStoreContext } from './TodoRowStore'
 import { TransitionProps } from '@material-ui/core/transitions/transition'
 import Slide from '@material-ui/core/Slide/Slide'
 import { MessageDialog } from 'components/material-ui-modals'

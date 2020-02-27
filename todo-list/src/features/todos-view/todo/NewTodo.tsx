@@ -8,14 +8,16 @@ import InputBase from '@material-ui/core/InputBase'
 import { InputProps } from 'components/input-props'
 import Button from '@material-ui/core/Button'
 import { focusWithStartingCaret } from 'components/util/util'
+import { TodosStoreContext } from '../TodosStore'
 
 export const NewTodo = observer(() => {
     const rootStore = useContext(RootStoreContext)
+    const todosStore = useContext(TodosStoreContext)
 
     const store = useLocalStore(() => ({
         description: "",
         add: () => {
-            rootStore.addTodoToCurrentList(new Todo(store.description))
+            todosStore.addTodoToCurrent(new Todo(store.description))
             store.description = ""
         },
         get canAdd() {
@@ -25,10 +27,10 @@ export const NewTodo = observer(() => {
             if (e.key === 'Enter') {
                 store.canAdd && store.add()
             } else if (e.key === 'ArrowDown') {
-                if (rootStore.notDoneTodosOnCurrentList.length > 0) {
-                    focusWithStartingCaret(rootStore.notDoneTodosOnCurrentList[0].inputRef.current)
-                } else if (rootStore.doneTodosOnCurrentList.length > 0) {
-                    focusWithStartingCaret(rootStore.doneTodosOnCurrentList[0].inputRef.current)
+                if (todosStore.notDoneTodosOnCurrentList.length > 0) {
+                    focusWithStartingCaret(todosStore.notDoneTodosOnCurrentList[0].inputRef.current)
+                } else if (todosStore.doneTodosOnCurrentList.length > 0) {
+                    focusWithStartingCaret(todosStore.doneTodosOnCurrentList[0].inputRef.current)
                 }
             }
         }

@@ -6,14 +6,16 @@ import { createContext, createRef } from "react"
 import Todo from "entities/Todo"
 import { MessageDialogAction } from "components/material-ui-modals/MessageDialog/MessageDialog"
 import FormErrorHandler from "components/input-props/form-error-handler"
+import { messageYesNo, snackbar } from "components/material-ui-modals"
+import { TodosStore } from "../TodosStore"
 
-export class TodoStore {
-    constructor(rootStore: RootStore, sp: TodoRowProps) {
-        this.rootStore = rootStore
+type Params = TodoRowProps & { rootStore: RootStore, todosStore: TodosStore }
+
+export class TodoRowStore {
+    constructor(sp: Params) {
         this.sp = sp
     }
-    rootStore: RootStore
-    sp: TodoRowProps
+    sp: Params
     inputRef = createRef<HTMLInputElement | null>()
 
     @observable errorHandler = new FormErrorHandler<Todo>()
@@ -42,15 +44,32 @@ export class TodoStore {
         this.closeDetail()
     }
 
+    @action deleteTodo = async () => {
+        if (await messageYesNo({
+            title: "Delete",
+            content: "Do you really want to delete it?"
+        })) {
+            this.sp.todosStore.deleteTodo(this.sp.todo)
+            snackbar({ title: "To-do deleted successfully. 😢", variant: 'success', anchorOrigin: { horizontal: 'right', vertical: 'bottom' } })
+        }
+    }
+
     @computed get actions() {
         return [
             {
                 name: "Ok",
-                callback: this.saveDetail
+                callback: this.saveDetail,
+                color: 'primary',
             },
             {
                 name: "Cancel",
-                callback: this.closeDetail
+                callback: this.closeDetail,
+                color: 'primary',
+            },
+            {
+                name: "Delete",
+                callback: this.deleteTodo,
+                color: 'secondary'
             }
         ] as MessageDialogAction[]
     }
@@ -59,7 +78,7 @@ export class TodoStore {
         if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
 
             const { done } = this.sp.todo
-            const list = (done ? this.rootStore.doneTodosOnCurrentList : this.rootStore.notDoneTodosOnCurrentList)
+            const list = (done ? this.sp.todosStore.doneTodosOnCurrentList : this.sp.todosStore.notDoneTodosOnCurrentList)
             const currentTodoIndex = list.indexOf(this.sp.todo)
             const lastIndex = list.length - 1
 
@@ -68,8 +87,8 @@ export class TodoStore {
                     focusWithStartingCaret(list[currentTodoIndex + 1].inputRef.current)
                 } else {
                     if (!done) {
-                        if (this.rootStore.doneTodosOnCurrentList.length > 0) {
-                            focusWithStartingCaret(this.rootStore.doneTodosOnCurrentList[0].inputRef.current)
+                        if (this.sp.todosStore.doneTodosOnCurrentList.length > 0) {
+                            focusWithStartingCaret(this.sp.todosStore.doneTodosOnCurrentList[0].inputRef.current)
                         }
                     }
                 }
@@ -78,12 +97,12 @@ export class TodoStore {
                     focusWithStartingCaret(list[currentTodoIndex - 1].inputRef.current)
                 } else {
                     if (done) {
-                        if (this.rootStore.notDoneTodosOnCurrentList.length > 0) {
-                            const last = this.rootStore.notDoneTodosOnCurrentList.length - 1
-                            focusWithStartingCaret(this.rootStore.notDoneTodosOnCurrentList[last].inputRef.current)
+                        if (this.sp.todosStore.notDoneTodosOnCurrentList.length > 0) {
+                            const last = this.sp.todosStore.notDoneTodosOnCurrentList.length - 1
+                            focusWithStartingCaret(this.sp.todosStore.notDoneTodosOnCurrentList[last].inputRef.current)
                         }
                     } else {
-                        focusWithStartingCaret(this.rootStore.newTodoInputRef.current)
+                        focusWithStartingCaret(this.sp.rootStore.newTodoInputRef.current)
                     }
                 }
             }
@@ -93,5 +112,6 @@ export class TodoStore {
 }
 const rootStore = new RootStore()
 const todo = new Todo()
-export const TodoStoreContext = createContext(new TodoStore(rootStore, { todo }))
+const todosStore = new TodosStore({ todosContainer: { todos: [] } })
+export const TodoStoreContext = createContext(new TodoRowStore({ todo, rootStore, todosStore }))
 
