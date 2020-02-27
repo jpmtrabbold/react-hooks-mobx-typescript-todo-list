@@ -22,10 +22,10 @@ const nullChange = () => null
 
 export const TodoDetail = observer((props: TodoDetailProps) => {
     const store = useContext(TodoStoreContext)
-    
+
     return (
         <MessageDialog
-            title="Details"
+            title={`Details`}
             TransitionComponent={SlideUpTransition}
             open={store.detailOpen}
             onClose={store.closeDetail}
@@ -74,7 +74,6 @@ export const TodoDetail = observer((props: TodoDetailProps) => {
                         />
                     </InputProps>
                 </Grid>
-
             </Grid>
         </MessageDialog>
     )
