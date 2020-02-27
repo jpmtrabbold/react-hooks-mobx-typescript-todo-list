@@ -55,7 +55,7 @@ export const TodoListRow = observer(({ list, folder, nestingLevel = 0 }: TodoLis
                 <ListIcon />
             </ListItemIcon>
             <ListItemText primary={list.name} />
-            <MoreButton actions={store.actions} />
+            <MoreButton actions={store.actions} variant='vertical' />
         </ListItem>
     </>
 })

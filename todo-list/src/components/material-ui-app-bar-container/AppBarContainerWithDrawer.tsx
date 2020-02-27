@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react"
+import React from "react"
 import { observer, useLocalStore } from "mobx-react-lite"
 import AppBar from "@material-ui/core/AppBar"
 import Toolbar from "@material-ui/core/Toolbar"
@@ -8,16 +8,8 @@ import { makeStyles, useTheme } from "@material-ui/core/styles"
 import useMediaQuery from "@material-ui/core/useMediaQuery"
 import Drawer from '@material-ui/core/Drawer';
 import MenuIcon from '@material-ui/icons/Menu'
-import useElementSize from "hooks/useElementSize"
 import { AppBarContainerWithDrawerStore } from "./AppBarContainerWithDrawerStore"
-export interface AppBarContainerWithDrawerProps {
-    title?: React.ReactNode
-    rightButtons?: React.ReactNode[]
-    style?: React.CSSProperties
-    drawer?: React.ReactNode
-    initialDrawerOpen?: boolean
-    setStore?: (store: AppBarContainerWithDrawerStore) => any
-}
+
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -51,32 +43,22 @@ const useStyles = makeStyles(theme => ({
     },
 }))
 
+
+export interface AppBarContainerWithDrawerProps {
+    title?: React.ReactNode
+    rightButtons?: React.ReactNode[]
+    style?: React.CSSProperties
+    drawer?: React.ReactNode
+    initialDrawerOpen?: boolean
+    setStore?: (store: AppBarContainerWithDrawerStore) => any
+}
+
 export const AppBarContainerWithDrawer = observer((props: React.PropsWithChildren<AppBarContainerWithDrawerProps>) => {
-    const theme = useTheme();
+    const theme = useTheme()
     const bigScreen = useMediaQuery(theme.breakpoints.up('md'));
+    
     const classes = useStyles()
-    const drawerRef = useRef<HTMLDivElement | null>(null)
-    const drawerSize = useElementSize(drawerRef.current)
-
-    const store = useLocalStore(source => new AppBarContainerWithDrawerStore(source), { bigScreen, ...props, drawerSize })
-
-    useEffect(() => {
-        setTimeout(() => {
-            if (props.initialDrawerOpen !== undefined) {
-                store.setOpen(props.initialDrawerOpen!)
-            }
-        })
-    }, [props.initialDrawerOpen, store])
-
-    useEffect(() => {
-        setTimeout(() => {
-            if (bigScreen) {
-                store.setBigScreen(true)
-            } else {
-                store.setBigScreen(false)
-            }
-        })
-    }, [bigScreen, store])
+    const store = useLocalStore(source => new AppBarContainerWithDrawerStore(source), { bigScreen, ...props, initialDrawerOpen: props.initialDrawerOpen })
 
     return (<>
         <div className={classes.root} style={props.style}>
@@ -109,7 +91,7 @@ export const AppBarContainerWithDrawer = observer((props: React.PropsWithChildre
             variant={(store.permanent && store.open) ? 'persistent' : 'temporary'}
             open={store.open}
             onClose={store.onClose}>
-            <div style={store.drawerStyle} ref={drawerRef}>
+            <div style={store.drawerStyle} ref={store.setDrawer}>
                 {store.permanent && <div className={classes.drawerOffset} />}
                 {props.drawer}
             </div>

@@ -47,7 +47,7 @@ export const TodoListFolderRow = observer((props: TodoListFolderRowProps) => {
     
     return <>
         <CollapsibleListItem
-            button={<MoreButton className={classes.add} actions={store.actions} />}
+            button={<MoreButton className={classes.add} actions={store.actions} variant='vertical' />}
             icon={<FolderIcon />}
             label={props.listFolder.name}
             setStore={props.listFolder.setCollapsibleStore}

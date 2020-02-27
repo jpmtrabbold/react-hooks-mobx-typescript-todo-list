@@ -1,12 +1,12 @@
-import { createContext, createRef } from "react";
-import { observable, action, computed } from "mobx";
-import TodoList from "entities/TodoList";
-import Todo from "entities/Todo";
-import { FolderListStore } from "./todo-lists-view/folder-list-dialog/FolderListStore";
-import TodoListFolder from "entities/TodoListFolder";
-import { focusWithStartingCaret, removeItemFromArray } from "components/util/util";
-import { AppBarContainerWithDrawerStore } from "components/material-ui-app-bar-container/AppBarContainerWithDrawerStore";
-import { messageYesNo, snackbar } from "components/material-ui-modals";
+import { createContext, createRef } from "react"
+import { observable, action, computed, observe, IObservableArray } from "mobx"
+import TodoList from "entities/TodoList"
+import Todo from "entities/Todo"
+import { FolderListStore } from "./todo-lists-view/folder-list-dialog/FolderListStore"
+import TodoListFolder from "entities/TodoListFolder"
+import { focusWithStartingCaret, removeItemFromArray } from "components/util/util"
+import { AppBarContainerWithDrawerStore } from "components/material-ui-app-bar-container/AppBarContainerWithDrawerStore"
+import { messageYesNo, snackbar } from "components/material-ui-modals"
 
 type TodoListOrListFolder = TodoList | TodoListFolder
 
@@ -34,13 +34,15 @@ export class RootStore {
                 new Todo("Wash my feet"),
             ]),
         ]
-
+        observe(this.todoListsAndFolders as IObservableArray<TodoListOrListFolder>, () => setTimeout(() => {
+            this.appBarStore?.setDrawerWidth()
+        }))
         this.folderStore = new FolderListStore(this)
     }
 
     folderStore: FolderListStore
 
-    @observable todoListsAndFolders = [] as TodoListOrListFolder[]
+    @observable todoListsAndFolders: TodoListOrListFolder[]
 
     @action selectTodoList = (list: TodoList) => {
         this.selectedTodoList = list
@@ -84,7 +86,7 @@ export class RootStore {
         } else {
             this.todoListsAndFolders.push(list)
         }
-        
+
     }
 
     @computed get doneTodosOnCurrentList() {
@@ -106,7 +108,9 @@ export class RootStore {
     }
 
     appBarStore?: AppBarContainerWithDrawerStore
-    setAppBarStore = (store: AppBarContainerWithDrawerStore) => this.appBarStore = store
+    setAppBarStore = (store: AppBarContainerWithDrawerStore) => {
+        this.appBarStore = store
+    }
 }
 
 export const RootStoreContext = createContext(new RootStore())
