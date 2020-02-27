@@ -40,7 +40,7 @@ export const NewTodo = observer(() => {
         <InputProps stateObject={store} propertyName='description'>
             <InputBase
                 inputProps={{ ref: rootStore.newTodoInputRef }}
-                placeholder="Add new to-do..."
+                placeholder="Add new..."
                 onKeyUp={store.keyPressAdd}
                 fullWidth
                 endAdornment={(store.canAdd && (

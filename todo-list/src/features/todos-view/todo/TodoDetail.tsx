@@ -9,6 +9,8 @@ import TextField from '@material-ui/core/TextField'
 import Grid from '@material-ui/core/Grid'
 import { CheckBoxWithLabel } from 'components/material-ui-checkbox-with-label'
 import { KeyboardDatePicker } from "@material-ui/pickers/DatePicker"
+import { TodosView } from '../TodosView'
+import Typography from '@material-ui/core/Typography'
 
 export interface TodoDetailProps {
     readOnly?: boolean
@@ -22,10 +24,10 @@ const nullChange = () => null
 
 export const TodoDetail = observer((props: TodoDetailProps) => {
     const store = useContext(TodoStoreContext)
-    
+
     return (
         <MessageDialog
-            title="Details"
+            title={`Details`}
             TransitionComponent={SlideUpTransition}
             open={store.detailOpen}
             onClose={store.closeDetail}
@@ -73,6 +75,15 @@ export const TodoDetail = observer((props: TodoDetailProps) => {
                             disabled={props.readOnly}
                         />
                     </InputProps>
+                </Grid>
+                <Grid item xs={12}>
+                    <br/>
+                    <Typography variant='h6'>
+                        Sub-tasks
+                    </Typography>
+                </Grid>
+                <Grid item xs={12}>
+                    <TodosView todosContainer={store.editableTodo!} />
                 </Grid>
 
             </Grid>
