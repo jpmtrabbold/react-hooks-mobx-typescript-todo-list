@@ -46,7 +46,7 @@ export const TodoListsDrawerContent = observer(() => {
                 <CreateNewFolderIcon />
             </Fab>
         </Tooltip>
-        <Tooltip title='Add List'>
+        <Tooltip title='Add List to Root'>
             <Fab color="primary" className={classes.fabList} onClick={folderStore.addList}>
                 <PlaylistAddIcon />
             </Fab>

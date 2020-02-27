@@ -55,7 +55,7 @@ export const TodoDetail = observer((props: TodoDetailProps) => {
                     <InputProps stateObject={store.editableTodo!} propertyName='dueDate' errorHandler={store.errorHandler} config={{ elementValueForUndefinedOrNull: () => null }}>
                         <KeyboardDatePicker
                             autoOk
-                            label="Expiry Date"
+                            label="Due Date"
                             fullWidth
                             value={null}
                             onChange={nullChange}

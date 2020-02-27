@@ -22,15 +22,19 @@ export class FolderListStore {
     folder?: TodoListFolder
     list?: TodoList
 
+    focus = () => {
+        setTimeout(() => {
+            selectAllText(this.inputRef.current)
+        }, 100)
+    }
+
     @action addListToFolder(listFolder: TodoListFolder) {
         this.showNameEditor = true
         this.folderOrListName = ""
         this.entityType = 'list'
         this.actionType = 'add'
         this.folder = listFolder
-        setTimeout(() => {
-            selectAllText(this.inputRef.current)
-        }, 100);
+        this.focus()    
     }
 
     @action addList = () => {
@@ -39,9 +43,7 @@ export class FolderListStore {
         this.entityType = 'list'
         this.actionType = 'add'
         this.folder = undefined
-        setTimeout(() => {
-            selectAllText(this.inputRef.current)
-        }, 100);
+        this.focus()
     }
 
     @action addFolder = () => {
@@ -49,9 +51,7 @@ export class FolderListStore {
         this.folderOrListName = ""
         this.entityType = 'folder'
         this.actionType = 'add'
-        setTimeout(() => {
-            selectAllText(this.inputRef.current)
-        }, 100);
+        this.focus()
     }
 
     @action renameFolder = (listFolder: TodoListFolder) => {
@@ -60,9 +60,7 @@ export class FolderListStore {
         this.folderOrListName = listFolder.name
         this.entityType = 'folder'
         this.actionType = 'edit'
-        setTimeout(() => {
-            selectAllText(this.inputRef.current)
-        }, 100);
+        this.focus()
     }
 
     @action renameList = (list: TodoList) => {
@@ -71,9 +69,7 @@ export class FolderListStore {
         this.folderOrListName = list.name
         this.entityType = 'list'
         this.actionType = 'edit'
-        setTimeout(() => {
-            selectAllText(this.inputRef.current)
-        }, 100);
+        this.focus()
     }
 
     @action confirmAction = () => {
@@ -111,6 +107,4 @@ export class FolderListStore {
             this.confirmAction()
         }
     }
-
-
 }

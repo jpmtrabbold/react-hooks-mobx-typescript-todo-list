@@ -33,6 +33,11 @@ export class TodoStore {
     }
 
     @action saveDetail = () => {
+        this.errorHandler.reset()
+        if (!this.editableTodo?.description) {
+            this.errorHandler.error('description', 'This field is mandatory')
+            return
+        }
         this.sp.todo.copyFrom(this.editableTodo!)
         this.closeDetail()
     }
