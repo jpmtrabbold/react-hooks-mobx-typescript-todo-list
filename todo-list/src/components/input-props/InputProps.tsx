@@ -65,8 +65,8 @@ export function InputProps<T extends Object, P extends Extract<keyof T, string>>
     config = {},
     ...props
 }: InputPropsProps<T, P>) {
-    const [stateObject, propertyName, onValueChange, onValueChanged, isCheckboxProps, errorHandler, errors, value, variant, obsConfig] =
-        useObserver(() => [props.stateObject, props.propertyName, props.onValueChange, props.onValueChanged, config.isCheckbox, props.errorHandler, props.errorHandler && props.errorHandler.errors, props.stateObject[props.propertyName], props.variant, config])
+    const [stateObject, propertyName, onValueChange, onValueChanged, isCheckboxProps, errorHandler, value, variant, obsConfig] =
+        useObserver(() => [props.stateObject, props.propertyName, props.onValueChange, props.onValueChanged, config.isCheckbox, props.errorHandler, props.stateObject[props.propertyName], props.variant, config, props.errorHandler && props.errorHandler.errors])
 
     const isCheckbox = (isCheckboxProps === undefined ? typeof stateObject[propertyName] === 'boolean' : isCheckboxProps)
 
