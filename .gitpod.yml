@@ -1,4 +1,3 @@
 tasks:
   - init: npm install
-    before: cd todo-list
     command: npm start
