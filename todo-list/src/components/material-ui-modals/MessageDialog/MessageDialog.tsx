@@ -38,13 +38,15 @@ export interface MessageDialogAction {
    identifier?: string
 }
 
+export type TransitionComponentProps = TransitionProps & { children?: React.ReactElement<any, any> }
+
 export type MessageDialogProps = MessageOptions & {
    container?: HTMLElement,
    resolve?: (value?: MessageDialogAction | PromiseLike<MessageDialogAction> | undefined) => void
    children?: React.ReactNode;
    open?: boolean
    onClose?: () => any
-   TransitionComponent?: React.ComponentType<TransitionProps>;
+   TransitionComponent?: React.ComponentType<TransitionComponentProps>;
 }
 
 export const MessageDialog = observer(({ actions, title, content, variant, container, resolve, onClose, open, children, TransitionComponent, ...dialogProps }: MessageDialogProps) => {

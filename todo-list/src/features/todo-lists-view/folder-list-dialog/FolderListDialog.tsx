@@ -2,7 +2,7 @@ import React, { useContext } from 'react'
 import { observer } from 'mobx-react-lite'
 import { RootStoreContext } from '../../RootStore'
 import { MessageDialog } from 'components/material-ui-modals'
-import { InputProps } from 'components/input-props'
+import { InputProps } from 'input-props'
 import { TextField } from '@material-ui/core'
 
 export const FolderListDialog = observer(() => {

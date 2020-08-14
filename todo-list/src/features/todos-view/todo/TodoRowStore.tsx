@@ -5,7 +5,7 @@ import { focusWithStartingCaret } from "components/util/util"
 import { createContext, createRef } from "react"
 import Todo from "entities/Todo"
 import { MessageDialogAction } from "components/material-ui-modals/MessageDialog/MessageDialog"
-import FormErrorHandler from "components/input-props/form-error-handler"
+import { FormErrorHandler } from "input-props";
 import { messageYesNo, snackbar } from "components/material-ui-modals"
 import { TodosStore } from "../TodosStore"
 

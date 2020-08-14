@@ -3,31 +3,32 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@date-io/date-fns": "^1.3.11",
-    "@date-io/moment": "^2.0.1",
-    "@material-ui/core": "^4.9.3",
+    "@date-io/moment": "^2.8.0",
+    "@material-ui/core": "^4.11.0",
     "@material-ui/icons": "^4.9.1",
-    "@material-ui/pickers": "^3.2.8",
-    "@testing-library/jest-dom": "^5.1.1",
-    "@testing-library/react": "^9.4.0",
-    "@testing-library/user-event": "^10.0.0",
-    "@types/jest": "^25.1.3",
-    "@types/node": "^13.7.4",
-    "@types/react": "^16.9.21",
-    "@types/react-dom": "^16.9.5",
-    "date-fns": "^2.0.0-beta.5",
-    "mobx": "^5.15.4",
-    "mobx-react-lite": "^1.5.2",
-    "moment": "^2.24.0",
-    "react": "^16.12.0",
-    "react-dom": "^16.12.0",
-    "react-scripts": "3.4.0",
+    "@material-ui/pickers": "^3.2.10",
+    "@testing-library/jest-dom": "^5.11.3",
+    "@testing-library/react": "^10.4.8",
+    "@testing-library/user-event": "^12.1.1",
+    "@types/jest": "^26.0.9",
+    "@types/node": "^14.0.27",
+    "@types/react": "^16.9.46",
+    "@types/react-dom": "^16.9.8",
+    "date-fns": "^2.15.0",
+    "input-props": "^1.3.1",
+    "mobx": "^5.15.5",
+    "mobx-react-lite": "^2.0.7",
+    "moment": "^2.27.0",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "react-scripts": "3.4.3",
     "typeface-roboto": "0.0.75",
-    "typescript": "^3.8.2"
+    "typescript": "^3.9.7"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "postbuild": "rm -rf docs && mv build docs",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -45,5 +46,10 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^3.9.0",
+    "@typescript-eslint/parser": "^3.9.0",
+    "eslint-plugin-react": "^7.20.6"
   }
 }

@@ -1,10 +1,10 @@
 import { observable, action } from "mobx";
 import { RootStore } from "../../RootStore";
-import FormErrorHandler from "components/input-props/form-error-handler";
 import TodoListFolder from "entities/TodoListFolder";
 import TodoList from "entities/TodoList";
 import { createRef } from "react";
 import { selectAllText } from "components/util/util";
+import { FormErrorHandler } from "input-props";
 
 export class FolderListStore {
     constructor(rootStore: RootStore) {
@@ -34,7 +34,7 @@ export class FolderListStore {
         this.entityType = 'list'
         this.actionType = 'add'
         this.folder = listFolder
-        this.focus()    
+        this.focus()
     }
 
     @action addList = () => {
@@ -81,7 +81,7 @@ export class FolderListStore {
         if (this.entityType === 'list') {
             if (this.actionType === 'add') {
                 this.rootStore.addNewList(new TodoList(this.folderOrListName), this.folder)
-                
+
                 if (!this.folder?.collapsibleStore?.collapsed) {
                     this.folder?.collapsibleStore?.toggleOpen()
                 }
