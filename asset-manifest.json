@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/react-hooks-mobx-typescript-todo-list/static/css/main.27fd15f6.chunk.css",
-    "main.js": "/react-hooks-mobx-typescript-todo-list/static/js/main.4c9e8d5c.chunk.js",
-    "main.js.map": "/react-hooks-mobx-typescript-todo-list/static/js/main.4c9e8d5c.chunk.js.map",
+    "main.js": "/react-hooks-mobx-typescript-todo-list/static/js/main.12470d57.chunk.js",
+    "main.js.map": "/react-hooks-mobx-typescript-todo-list/static/js/main.12470d57.chunk.js.map",
     "runtime-main.js": "/react-hooks-mobx-typescript-todo-list/static/js/runtime-main.48a69d60.js",
     "runtime-main.js.map": "/react-hooks-mobx-typescript-todo-list/static/js/runtime-main.48a69d60.js.map",
     "static/css/2.679d7958.chunk.css": "/react-hooks-mobx-typescript-todo-list/static/css/2.679d7958.chunk.css",
     "static/js/2.38e67087.chunk.js": "/react-hooks-mobx-typescript-todo-list/static/js/2.38e67087.chunk.js",
     "static/js/2.38e67087.chunk.js.map": "/react-hooks-mobx-typescript-todo-list/static/js/2.38e67087.chunk.js.map",
     "index.html": "/react-hooks-mobx-typescript-todo-list/index.html",
-    "precache-manifest.69bba70297a36d43ecc143c8d38e9ccd.js": "/react-hooks-mobx-typescript-todo-list/precache-manifest.69bba70297a36d43ecc143c8d38e9ccd.js",
+    "precache-manifest.58b5cd7801939254c2dd1c0360711dc9.js": "/react-hooks-mobx-typescript-todo-list/precache-manifest.58b5cd7801939254c2dd1c0360711dc9.js",
     "service-worker.js": "/react-hooks-mobx-typescript-todo-list/service-worker.js",
     "static/css/2.679d7958.chunk.css.map": "/react-hooks-mobx-typescript-todo-list/static/css/2.679d7958.chunk.css.map",
     "static/css/main.27fd15f6.chunk.css.map": "/react-hooks-mobx-typescript-todo-list/static/css/main.27fd15f6.chunk.css.map",
@@ -21,6 +21,6 @@
     "static/css/2.679d7958.chunk.css",
     "static/js/2.38e67087.chunk.js",
     "static/css/main.27fd15f6.chunk.css",
-    "static/js/main.4c9e8d5c.chunk.js"
+    "static/js/main.12470d57.chunk.js"
   ]
 }

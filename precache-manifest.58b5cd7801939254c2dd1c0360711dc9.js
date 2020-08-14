@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "5ccafaaa5aac9965f5f14161f6eb8d7b",
+    "revision": "41d50cae021c2bc9ad33b96b8e0b3cf5",
     "url": "/react-hooks-mobx-typescript-todo-list/index.html"
   },
   {
@@ -8,7 +8,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/react-hooks-mobx-typescript-todo-list/static/css/2.679d7958.chunk.css"
   },
   {
-    "revision": "6fbc8150475adffecf62",
+    "revision": "b40897a2bfb2cdee98b3",
     "url": "/react-hooks-mobx-typescript-todo-list/static/css/main.27fd15f6.chunk.css"
   },
   {
@@ -20,8 +20,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/react-hooks-mobx-typescript-todo-list/static/js/2.38e67087.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "6fbc8150475adffecf62",
-    "url": "/react-hooks-mobx-typescript-todo-list/static/js/main.4c9e8d5c.chunk.js"
+    "revision": "b40897a2bfb2cdee98b3",
+    "url": "/react-hooks-mobx-typescript-todo-list/static/js/main.12470d57.chunk.js"
   },
   {
     "revision": "c8477ae1df7d6bf50813",
