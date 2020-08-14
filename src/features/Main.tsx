@@ -8,6 +8,7 @@ import { TodosView } from './todos-view/TodosView'
 export const Main = observer(() => {
     const store = useLocalStore(() => new RootStore())
     return (
+        
         <RootStoreContext.Provider value={store}>
             <AppBarContainerWithDrawer
                 title={'Todos' + store.titlePrefix}
