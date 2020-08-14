@@ -2,3 +2,5 @@
 
 # react-hooks-mobx-typescript-todo-list
 A todo list built with react hooks + mobx + typescript. In case you want to see it running: [Link](https://jpmtrabbold.github.io/react-hooks-mobx-typescript-todo-list)
+
+In this example, I make extensive use of [input-props](https://github.com/jpmtrabbold/input-props), a library I developed to give input fields a two-way data binding feel.
