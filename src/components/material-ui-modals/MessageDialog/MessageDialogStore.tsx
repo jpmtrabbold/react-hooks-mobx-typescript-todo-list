@@ -1,20 +1,22 @@
 import ReactDOM from "react-dom"
 import { createRef, createContext } from "react"
-import { observable, action, computed } from "mobx"
+
 import { MessageDialogProps, MessageDialogAction } from "./MessageDialog"
+import { makeAutoObservable } from "mobx"
 
 export class MessageDialogStore {
     constructor(source: MessageDialogProps) {
         this.source = source
+        makeAutoObservable(this)
     }
     source: MessageDialogProps
 
-    @observable isOpened = true
-    @computed get parentDefinesOpen() {
+    isOpened = true
+     get parentDefinesOpen() {
         return typeof this.source.open === 'boolean'
     }
     
-    @computed get open() {
+     get open() {
         if (this.parentDefinesOpen) {
             return !!this.source.open
         } else {
@@ -29,7 +31,7 @@ export class MessageDialogStore {
         return this.handleClose()
     }
 
-    @action handleClose = async (action?: MessageDialogAction) => {
+     handleClose = async (action?: MessageDialogAction) => {
         // in case the caller is using callbacks
         let canGoOn = true
 
@@ -63,15 +65,15 @@ export class MessageDialogStore {
         }
     }
     
-    @computed get hasSeparateContainer() {
+     get hasSeparateContainer() {
         return !!this.source.container
     }
 
-    @computed get hasNormalActions() {
+     get hasNormalActions() {
         return this.source.actions && (!this.source.variant || this.source.variant === 'normal')
     }
 
-    @computed get hasBiggerActions() {
+     get hasBiggerActions() {
         return this.source.actions && this.source.variant === 'bigger actions'
     }
 }

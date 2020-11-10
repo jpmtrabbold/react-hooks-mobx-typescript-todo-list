@@ -1,5 +1,6 @@
+import useStore from "mobx-store-utils"
 import React from "react"
-import { observer, useLocalStore } from "mobx-react-lite"
+import { observer } from "mobx-react-lite"
 import AppBar from "@material-ui/core/AppBar"
 import Toolbar from "@material-ui/core/Toolbar"
 import IconButton from "@material-ui/core/IconButton"
@@ -9,7 +10,6 @@ import useMediaQuery from "@material-ui/core/useMediaQuery"
 import Drawer from '@material-ui/core/Drawer';
 import MenuIcon from '@material-ui/icons/Menu'
 import { AppBarContainerWithDrawerStore } from "./AppBarContainerWithDrawerStore"
-
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -56,9 +56,10 @@ export interface AppBarContainerWithDrawerProps {
 export const AppBarContainerWithDrawer = observer((props: React.PropsWithChildren<AppBarContainerWithDrawerProps>) => {
     const theme = useTheme()
     const bigScreen = useMediaQuery(theme.breakpoints.up('md'));
-    
+
     const classes = useStyles()
-    const store = useLocalStore(source => new AppBarContainerWithDrawerStore(source), { bigScreen, ...props, initialDrawerOpen: props.initialDrawerOpen })
+    const store = useStore(source => new AppBarContainerWithDrawerStore(source), 
+        { bigScreen, ...props, initialDrawerOpen: props.initialDrawerOpen }, AppBarContainerWithDrawerStore.reactions)
 
     return (<>
         <div className={classes.root} style={props.style}>

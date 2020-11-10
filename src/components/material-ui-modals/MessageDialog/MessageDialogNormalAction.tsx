@@ -1,5 +1,6 @@
+import useStore from "mobx-store-utils"
 import React, { useContext } from "react"
-import { observer, useLocalStore } from "mobx-react-lite"
+import { observer } from "mobx-react-lite"
 import { MessageDialogAction } from "./MessageDialog"
 import { MessageDialogStoreContext } from "./MessageDialogStore"
 import Button from "@material-ui/core/Button"
@@ -12,7 +13,7 @@ interface MessageDialogNormalActionProps {
 export const MessageDialogNormalAction = observer(({ action, index }: MessageDialogNormalActionProps) => {
     const store = useContext(MessageDialogStoreContext)
 
-    const localStore = useLocalStore(source => ({
+    const localStore = useStore(source => ({
         handleClose() {
             store.handleClose(source.action)
         }

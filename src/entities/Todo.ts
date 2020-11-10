@@ -1,24 +1,26 @@
-import { observable, action } from 'mobx'
+
 import { createRef } from 'react'
 import { Moment } from 'moment'
+import { makeAutoObservable } from 'mobx'
 
 let id = 0
 export default class Todo {
     constructor(description?: string) {
         if (description) this.description = description
         this.id = ++id
+        makeAutoObservable(this)
     }
 
     inputRef = createRef<HTMLInputElement>()
     id: number
-    @observable done = false
-    @observable description = ""
+    done = false
+    description = ""
 
-    @observable notes = ""
-    @observable dueDate: Moment | null = null
-    @observable todos = [] as Todo[]
+    notes = ""
+    dueDate: Moment | null = null
+    todos = [] as Todo[]
 
-    @action clone = () => {
+     clone = () => {
         const newTodo = new Todo(this.description);
         newTodo.id = this.id
         newTodo.done = this.done
@@ -28,7 +30,7 @@ export default class Todo {
         return newTodo
     }
 
-    @action copyFrom = (todo: Todo) => {
+     copyFrom = (todo: Todo) => {
         this.id = todo.id
         this.description = todo.description
         this.done = todo.done

@@ -1,5 +1,6 @@
+import useStore from "mobx-store-utils"
 import React, { useContext } from 'react'
-import { observer, useLocalStore } from "mobx-react-lite"
+import { observer } from "mobx-react-lite"
 import TodoListFolder from "entities/TodoListFolder"
 import FolderIcon from "@material-ui/icons/Folder"
 import { TodoListRow } from './TodoListRow'
@@ -23,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
 export const TodoListFolderRow = observer((props: TodoListFolderRowProps) => {
     const rootStore = useContext(RootStoreContext)
 
-    const store = useLocalStore(sp => ({
+    const store = useStore(sp => ({
         get actions() {
             return [
                 {

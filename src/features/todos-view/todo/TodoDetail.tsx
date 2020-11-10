@@ -1,10 +1,8 @@
 import React, { useContext } from 'react'
 import { observer } from 'mobx-react-lite'
 import { TodoStoreContext } from './TodoRowStore'
-import { TransitionProps } from '@material-ui/core/transitions/transition'
 import Slide from '@material-ui/core/Slide/Slide'
 import { MessageDialog } from 'components/material-ui-modals'
-import { InputProps } from 'input-props'
 import TextField from '@material-ui/core/TextField'
 import Grid from '@material-ui/core/Grid'
 import { CheckBoxWithLabel } from 'components/material-ui-checkbox-with-label'
@@ -12,6 +10,7 @@ import { KeyboardDatePicker } from "@material-ui/pickers/DatePicker"
 import Typography from '@material-ui/core/Typography'
 import { TodosView } from '../TodosView'
 import { TransitionComponentProps } from 'components/material-ui-modals/MessageDialog/MessageDialog'
+import { useFormHandler } from 'mobx-store-utils'
 
 export interface TodoDetailProps {
     readOnly?: boolean
@@ -31,6 +30,13 @@ const nullChange = () => null
 export const TodoDetail = observer((props: TodoDetailProps) => {
     const store = useContext(TodoStoreContext)
 
+    const handler = useFormHandler(store.editableTodo!, [
+        { propertyName: 'description', errorHandler: store.errorHandler },
+        { propertyName: 'done', errorHandler: store.errorHandler },
+        { propertyName: 'notes', errorHandler: store.errorHandler },
+        { propertyName: 'dueDate', errorHandler: store.errorHandler, config: { elementValueForUndefinedOrNull: () => null } },
+    ])
+
     return (
         <MessageDialog
             title={`Details`}
@@ -41,26 +47,26 @@ export const TodoDetail = observer((props: TodoDetailProps) => {
         >
             <Grid container spacing={2}>
                 <Grid item xs={12}>
-                    <InputProps stateObject={store.editableTodo!} propertyName='description' errorHandler={store.errorHandler}>
+                    <handler.description.InputWrapper>
                         <TextField
                             inputProps={{ ref: store.inputRef }}
                             label='Description'
                             fullWidth
                             disabled={props.readOnly}
                         />
-                    </InputProps>
+                    </handler.description.InputWrapper>
                 </Grid>
                 <Grid item xs={6}>
-                    <InputProps stateObject={store.editableTodo!} propertyName='done' errorHandler={store.errorHandler}>
+                    <handler.done.CheckboxWrapper>
                         <CheckBoxWithLabel
                             label='Done?'
                             fullWidth
                             disabled={props.readOnly}
                         />
-                    </InputProps>
+                    </handler.done.CheckboxWrapper>
                 </Grid>
                 <Grid item xs={6}>
-                    <InputProps stateObject={store.editableTodo!} propertyName='dueDate' errorHandler={store.errorHandler} config={{ elementValueForUndefinedOrNull: () => null }}>
+                    <handler.dueDate.InputWrapper>
                         <KeyboardDatePicker
                             autoOk
                             label="Due Date"
@@ -70,17 +76,17 @@ export const TodoDetail = observer((props: TodoDetailProps) => {
                             format="dd/MM/yyyy"
                             disabled={props.readOnly}
                         />
-                    </InputProps>
+                    </handler.dueDate.InputWrapper>
                 </Grid>
                 <Grid item xs={12}>
-                    <InputProps stateObject={store.editableTodo!} propertyName='notes' errorHandler={store.errorHandler}>
+                    <handler.notes.InputWrapper>
                         <TextField
                             multiline
                             label='Notes'
                             fullWidth
                             disabled={props.readOnly}
                         />
-                    </InputProps>
+                    </handler.notes.InputWrapper>
                 </Grid>
                 <Grid item xs={12}>
                     <Typography variant='h6'>

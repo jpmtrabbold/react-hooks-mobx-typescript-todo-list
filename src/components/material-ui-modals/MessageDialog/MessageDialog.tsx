@@ -1,10 +1,11 @@
+import useStore from "mobx-store-utils"
 import Dialog, { DialogProps } from "@material-ui/core/Dialog"
 import DialogTitle from "@material-ui/core/DialogTitle"
 import DialogContent from "@material-ui/core/DialogContent"
 import React, { useEffect } from "react"
 import { MuiThemeProvider } from "@material-ui/core/styles"
 import { modalConfig } from ".."
-import { useLocalStore, observer } from "mobx-react-lite"
+import { observer } from "mobx-react-lite"
 import { MessageDialogStore, MessageDialogStoreContext } from "./MessageDialogStore"
 import { MessageDialogNormalActions } from "./MessageDialogNormalActions"
 import { MessageDialogBiggerActions } from "./MessageDialogBiggerActions"
@@ -50,7 +51,7 @@ export type MessageDialogProps = MessageOptions & {
 }
 
 export const MessageDialog = observer(({ actions, title, content, variant, container, resolve, onClose, open, children, TransitionComponent, ...dialogProps }: MessageDialogProps) => {
-   const store = useLocalStore(source => new MessageDialogStore(source), { actions, title, content, variant, container, resolve, onClose, open })
+   const store = useStore(source => new MessageDialogStore(source), { actions, title, content, variant, container, resolve, onClose, open })
 
    useEffect(() => {
       return () => {

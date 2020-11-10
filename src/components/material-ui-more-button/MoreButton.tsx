@@ -1,5 +1,6 @@
+import useStore from "mobx-store-utils"
 import React, { useRef, useCallback } from 'react'
-import { observer, useLocalStore } from "mobx-react-lite"
+import { observer } from "mobx-react-lite"
 import MenuItem from '@material-ui/core/MenuItem'
 import Menu from '@material-ui/core/Menu'
 import MoreVertIcon from "@material-ui/icons/MoreVert"
@@ -24,7 +25,7 @@ interface MoreButtonProps {
 
 export const MoreButton = observer(({ actions, size = 'small', variant = 'horizontal', className, style }: MoreButtonProps) => {
     const anchorRef = useRef<HTMLButtonElement | null>(null)
-    const store = useLocalStore(sp => ({
+    const store = useStore(sp => ({
         open: false,
         toggleOpen: (event: React.MouseEvent<HTMLElement>) => {
             event.stopPropagation()

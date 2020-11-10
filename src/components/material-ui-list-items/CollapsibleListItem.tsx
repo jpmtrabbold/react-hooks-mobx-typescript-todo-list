@@ -1,12 +1,14 @@
+import useStore from "mobx-store-utils"
 import React from 'react'
-import { observer, useLocalStore } from "mobx-react-lite"
+import { observer } from "mobx-react-lite"
 import ListItem from "@material-ui/core/ListItem"
 import ListItemText from "@material-ui/core/ListItemText"
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ExpandLessIcon from "@material-ui/icons/ExpandLess"
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore"
 import Collapse from '@material-ui/core/Collapse'
-import { observable, action } from 'mobx'
+import { makeAutoObservable } from "mobx"
+
 
 interface CollapsibleListItemProps {
     initialCollapsed?: boolean
@@ -20,14 +22,15 @@ export class CollapsibleListItemStore {
     constructor(sp: CollapsibleListItemProps) {
         this.collapsed = sp.initialCollapsed || false
         sp.setStore && sp.setStore(this)
+        makeAutoObservable(this)
     }
-    @observable collapsed: boolean
-    @action toggleOpen = () => {
+    collapsed: boolean
+     toggleOpen = () => {
         this.collapsed = !this.collapsed
     }
 }
 export const CollapsibleListItem = observer((props: React.PropsWithChildren<CollapsibleListItemProps>) => {
-    const localStore = useLocalStore(source => new CollapsibleListItemStore(source), props)
+    const localStore = useStore(source => new CollapsibleListItemStore(source), props)
 
     return <>
         <ListItem button onClick={localStore.toggleOpen}>

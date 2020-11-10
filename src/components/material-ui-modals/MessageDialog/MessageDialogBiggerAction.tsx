@@ -1,5 +1,6 @@
+import useStore from "mobx-store-utils"
 import React, { useContext } from "react"
-import { observer, useLocalStore } from "mobx-react-lite"
+import { observer } from "mobx-react-lite"
 import { MessageDialogAction } from "./MessageDialog"
 import { MessageDialogStoreContext } from "./MessageDialogStore"
 import ListItem from "@material-ui/core/ListItem"
@@ -14,7 +15,7 @@ interface MessageDialogBiggerActionProps {
 export const MessageDialogBiggerAction = observer(({ action, index }: MessageDialogBiggerActionProps) => {
     const store = useContext(MessageDialogStoreContext)
 
-    const localStore = useLocalStore(source => ({
+    const localStore = useStore(source => ({
         handleClose() {
             store.handleClose(source.action)
         }

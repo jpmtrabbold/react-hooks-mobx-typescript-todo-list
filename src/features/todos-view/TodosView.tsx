@@ -1,5 +1,6 @@
+import useStore from "mobx-store-utils"
 import React, { useContext } from 'react'
-import { observer, useLocalStore } from 'mobx-react-lite'
+import { observer } from 'mobx-react-lite'
 import { RootStoreContext } from 'features/RootStore'
 import Paper from '@material-ui/core/Paper'
 import List from '@material-ui/core/List'
@@ -26,7 +27,7 @@ export interface TodosViewProps {
 export const TodosView = observer((props: TodosViewProps) => {
     const classes = useStyles()
     const rootStore = useContext(RootStoreContext)
-    const store = useLocalStore(sp => new TodosStore(sp), props)
+    const store = useStore(sp => new TodosStore(sp), props)
 
     if (!rootStore.selectedTodoList) {
         return null

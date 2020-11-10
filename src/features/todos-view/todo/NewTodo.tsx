@@ -1,11 +1,11 @@
+import useStore, { useFormHandler } from "mobx-store-utils"
 import React, { useContext } from 'react'
-import { observer, useLocalStore } from 'mobx-react-lite'
+import { observer } from 'mobx-react-lite'
 import Todo from 'entities/Todo'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
 import { RootStoreContext } from 'features/RootStore'
 import InputBase from '@material-ui/core/InputBase'
-import { InputProps } from 'input-props'
 import Button from '@material-ui/core/Button'
 import { focusWithStartingCaret } from 'components/util/util'
 import { TodosStoreContext } from '../TodosStore'
@@ -14,7 +14,7 @@ export const NewTodo = observer(() => {
     const rootStore = useContext(RootStoreContext)
     const todosStore = useContext(TodosStoreContext)
 
-    const store = useLocalStore(() => ({
+    const store = useStore(() => ({
         description: "",
         add: () => {
             todosStore.addTodoToCurrent(new Todo(store.description))
@@ -36,8 +36,10 @@ export const NewTodo = observer(() => {
         }
     }))
 
+    const handler = useFormHandler({ store, propertyName: 'description' })
+
     const input = (
-        <InputProps stateObject={store} propertyName='description'>
+        <handler.InputWrapper>
             <InputBase
                 inputProps={{ ref: rootStore.newTodoInputRef }}
                 placeholder="Add new..."
@@ -49,7 +51,7 @@ export const NewTodo = observer(() => {
                     </Button>
                 )) || undefined}
             />
-        </InputProps>
+        </handler.InputWrapper>
     )
 
     return <>

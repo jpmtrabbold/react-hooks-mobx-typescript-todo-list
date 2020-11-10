@@ -1,40 +1,42 @@
 import { RootStore } from "features/RootStore"
 import { TodoRowProps } from "./TodoRow"
-import { action, observable, computed } from "mobx"
+
 import { focusWithStartingCaret } from "components/util/util"
 import { createContext, createRef } from "react"
 import Todo from "entities/Todo"
 import { MessageDialogAction } from "components/material-ui-modals/MessageDialog/MessageDialog"
-import { FormErrorHandler } from "input-props";
 import { messageYesNo, snackbar } from "components/material-ui-modals"
 import { TodosStore } from "../TodosStore"
+import { makeAutoObservable } from "mobx"
+import { FormErrorHandler } from "mobx-store-utils"
 
 type Params = TodoRowProps & { rootStore: RootStore, todosStore: TodosStore }
 
 export class TodoRowStore {
     constructor(sp: Params) {
         this.sp = sp
+        makeAutoObservable(this)
     }
     sp: Params
     inputRef = createRef<HTMLInputElement | null>()
 
-    @observable errorHandler = new FormErrorHandler<Todo>()
-    @observable editableTodo?: Todo
+    errorHandler = new FormErrorHandler<Todo>()
+    editableTodo?: Todo
 
-    @observable detailOpen = false
+    detailOpen = false
 
-    @action openDetail = () => {
+     openDetail = () => {
         this.detailOpen = true
         this.editableTodo = this.sp.todo.clone()
         setTimeout(() => {
             this.inputRef.current?.focus()
         }, 100);
     }
-    @action closeDetail = () => {
+     closeDetail = () => {
         this.detailOpen = false
     }
 
-    @action saveDetail = () => {
+     saveDetail = () => {
         this.errorHandler.reset()
         if (!this.editableTodo?.description) {
             this.errorHandler.error('description', 'This field is mandatory')
@@ -44,7 +46,7 @@ export class TodoRowStore {
         this.closeDetail()
     }
 
-    @action deleteTodo = async () => {
+     deleteTodo = async () => {
         if (await messageYesNo({
             title: "Delete",
             content: "Do you really want to delete it?"
@@ -54,7 +56,7 @@ export class TodoRowStore {
         }
     }
 
-    @computed get actions() {
+     get actions() {
         return [
             {
                 name: "Ok",
@@ -74,7 +76,7 @@ export class TodoRowStore {
         ] as MessageDialogAction[]
     }
 
-    @action onInputKeyPress = (event: React.KeyboardEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+     onInputKeyPress = (event: React.KeyboardEvent<HTMLTextAreaElement | HTMLInputElement>) => {
         if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
 
             const { done } = this.sp.todo

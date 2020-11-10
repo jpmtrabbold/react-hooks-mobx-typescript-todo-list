@@ -1,9 +1,9 @@
+import useStore, { useFormHandler } from "mobx-store-utils"
 import React, { useContext } from 'react'
-import { observer, useLocalStore } from 'mobx-react-lite'
+import { observer } from 'mobx-react-lite'
 import Todo from 'entities/Todo'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
-import { InputProps } from 'input-props'
 import InputBase from '@material-ui/core/InputBase'
 import Checkbox from '@material-ui/core/Checkbox'
 import { makeStyles } from '@material-ui/core/styles'
@@ -36,19 +36,23 @@ const useStyles = makeStyles((theme) => ({
 export const TodoRow = observer((props: TodoRowProps) => {
     const rootStore = useContext(RootStoreContext)
     const todosStore = useContext(TodosStoreContext)
-    const store = useLocalStore(sp => new TodoRowStore(sp), { ...props, rootStore, todosStore })
+    const store = useStore(sp => new TodoRowStore(sp), { ...props, rootStore, todosStore })
     const classes = useStyles()
+    const handler = useFormHandler(props.todo, [
+        { propertyName: 'description' },
+        { propertyName: 'done' },
+    ])
 
     return <TodoStoreContext.Provider value={store}>
         <ListItem>
 
-            <InputProps stateObject={props.todo} propertyName='done'>
+            <handler.done.CheckboxWrapper>
                 <Checkbox className={classes.checkbox} />
-            </InputProps>
+            </handler.done.CheckboxWrapper>
 
             <ListItemText>
 
-                <InputProps stateObject={props.todo} propertyName='description'>
+                <handler.description.InputWrapper>
                     <InputBase
                         inputProps={{ ref: props.todo.inputRef }}
                         onKeyDown={store.onInputKeyPress}
@@ -57,7 +61,7 @@ export const TodoRow = observer((props: TodoRowProps) => {
                         fullWidth
 
                     />
-                </InputProps>
+                </handler.description.InputWrapper>
 
             </ListItemText>
             {!!props.todo.notes && (

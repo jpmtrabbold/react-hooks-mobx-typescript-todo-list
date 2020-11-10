@@ -1,5 +1,4 @@
 import { TodosViewProps } from "./TodosView";
-import { computed, action } from "mobx";
 import Todo from "entities/Todo";
 import { removeItemFromArray } from "components/util/util";
 import { createContext } from "react";
@@ -10,22 +9,22 @@ export class TodosStore {
     }
     sp: TodosViewProps
 
-    @action addTodoToCurrent(todo: Todo) {
+     addTodoToCurrent(todo: Todo) {
         this.sp.todosContainer.todos.push(todo)
     }
 
-    @action deleteTodo = (todo: Todo) => {
+     deleteTodo = (todo: Todo) => {
         removeItemFromArray(this.sp.todosContainer.todos, todo)
     }
-    @computed get doneTodosOnCurrentList() {
+     get doneTodosOnCurrentList() {
         return this.sp.todosContainer.todos.filter(t => t.done) || []
     }
 
-    @computed get notDoneTodosOnCurrentList() {
+     get notDoneTodosOnCurrentList() {
         return this.sp.todosContainer.todos.filter(t => !t.done) || []
     }
 
-    @computed get hasDoneTodosOnCurrentList() {
+     get hasDoneTodosOnCurrentList() {
         return this.doneTodosOnCurrentList.length > 0
     }
 }

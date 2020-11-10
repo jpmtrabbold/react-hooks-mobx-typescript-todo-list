@@ -1,22 +1,22 @@
-import { observable, action } from "mobx";
 import { RootStore } from "../../RootStore";
 import TodoListFolder from "entities/TodoListFolder";
 import TodoList from "entities/TodoList";
 import { createRef } from "react";
 import { selectAllText } from "components/util/util";
-import { FormErrorHandler } from "input-props";
+import { makeAutoObservable } from "mobx";
+import { FormErrorHandler } from "mobx-store-utils";
 
 export class FolderListStore {
     constructor(rootStore: RootStore) {
         this.rootStore = rootStore
-
+        makeAutoObservable(this)
     }
     rootStore: RootStore
-    @observable errorHandler = new FormErrorHandler<FolderListStore>()
-    @observable showNameEditor = false
-    @observable folderOrListName = ""
-    @observable entityType?: 'list' | 'folder'
-    @observable actionType?: 'add' | 'edit'
+    errorHandler = new FormErrorHandler<FolderListStore>()
+    showNameEditor = false
+    folderOrListName = ""
+    entityType?: 'list' | 'folder'
+    actionType?: 'add' | 'edit'
 
     inputRef = createRef<HTMLInputElement | null>()
     folder?: TodoListFolder
@@ -28,7 +28,7 @@ export class FolderListStore {
         }, 100)
     }
 
-    @action addListToFolder(listFolder: TodoListFolder) {
+    addListToFolder(listFolder: TodoListFolder) {
         this.showNameEditor = true
         this.folderOrListName = ""
         this.entityType = 'list'
@@ -37,7 +37,7 @@ export class FolderListStore {
         this.focus()
     }
 
-    @action addList = () => {
+    addList = () => {
         this.showNameEditor = true
         this.folderOrListName = ""
         this.entityType = 'list'
@@ -46,7 +46,7 @@ export class FolderListStore {
         this.focus()
     }
 
-    @action addFolder = () => {
+    addFolder = () => {
         this.showNameEditor = true
         this.folderOrListName = ""
         this.entityType = 'folder'
@@ -54,7 +54,7 @@ export class FolderListStore {
         this.focus()
     }
 
-    @action renameFolder = (listFolder: TodoListFolder) => {
+    renameFolder = (listFolder: TodoListFolder) => {
         this.folder = listFolder
         this.showNameEditor = true
         this.folderOrListName = listFolder.name
@@ -63,7 +63,7 @@ export class FolderListStore {
         this.focus()
     }
 
-    @action renameList = (list: TodoList) => {
+    renameList = (list: TodoList) => {
         this.list = list
         this.showNameEditor = true
         this.folderOrListName = list.name
@@ -72,7 +72,7 @@ export class FolderListStore {
         this.focus()
     }
 
-    @action confirmAction = () => {
+    confirmAction = () => {
         this.errorHandler.reset()
         if (!this.folderOrListName) {
             this.errorHandler.error('folderOrListName', "Mandatory")
@@ -99,10 +99,10 @@ export class FolderListStore {
         }
 
     }
-    @action closeAddFolderList = () => {
+    closeAddFolderList = () => {
         this.showNameEditor = false
     }
-    @action onFolderEnterPress = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    onFolderEnterPress = (event: React.KeyboardEvent<HTMLDivElement>) => {
         if (event.key === 'Enter') {
             this.confirmAction()
         }

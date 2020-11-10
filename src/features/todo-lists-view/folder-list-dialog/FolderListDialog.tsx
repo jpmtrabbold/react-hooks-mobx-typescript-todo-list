@@ -2,13 +2,14 @@ import React, { useContext } from 'react'
 import { observer } from 'mobx-react-lite'
 import { RootStoreContext } from '../../RootStore'
 import { MessageDialog } from 'components/material-ui-modals'
-import { InputProps } from 'input-props'
 import { TextField } from '@material-ui/core'
+import { useFormHandler } from 'mobx-store-utils'
 
 export const FolderListDialog = observer(() => {
     const store = useContext(RootStoreContext)
     const { folderStore } = store
-   
+    const handler = useFormHandler({ store: folderStore, propertyName: 'folderOrListName', errorHandler: folderStore.errorHandler })
+
     return (
         <MessageDialog
             actions={[
@@ -28,14 +29,14 @@ export const FolderListDialog = observer(() => {
             open={folderStore.showNameEditor}
             onClose={folderStore.closeAddFolderList}
         >
-            <InputProps stateObject={folderStore} propertyName='folderOrListName' errorHandler={folderStore.errorHandler}>
+            <handler.InputWrapper>
                 <TextField
                     inputProps={{ ref: folderStore.inputRef }}
                     label={`${folderStore.entityType === 'list' ? 'List' : 'Folder'} name`}
                     fullWidth
                     onKeyUp={folderStore.onFolderEnterPress}
                 />
-            </InputProps>
+            </handler.InputWrapper>
 
         </MessageDialog>
     )

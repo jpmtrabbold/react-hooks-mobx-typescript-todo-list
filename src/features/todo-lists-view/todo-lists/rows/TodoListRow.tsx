@@ -1,5 +1,6 @@
+import useStore from "mobx-store-utils"
 import React, { useContext } from 'react'
-import { observer, useLocalStore } from "mobx-react-lite"
+import { observer } from "mobx-react-lite"
 import { RootStoreContext } from "../../../RootStore"
 import ListItem from "@material-ui/core/ListItem"
 import ListItemText from "@material-ui/core/ListItemText"
@@ -20,7 +21,7 @@ export const TodoListRow = observer(({ list, folder, nestingLevel = 0 }: TodoLis
     const rootStore = useContext(RootStoreContext)
     const theme = useTheme()
 
-    const store = useLocalStore(source => ({
+    const store = useStore(source => ({
         get listItemStyle() {
             if (source.nestingLevel) {
                 return { paddingLeft: theme.spacing(nestingLevel * 4) }

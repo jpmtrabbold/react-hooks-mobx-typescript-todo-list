@@ -1,5 +1,5 @@
 import { createContext, createRef } from "react"
-import { observable, action, computed, observe, IObservableArray } from "mobx"
+import { IObservableArray, makeAutoObservable } from "mobx"
 import TodoList from "entities/TodoList"
 import Todo from "entities/Todo"
 import { FolderListStore } from "./todo-lists-view/folder-list-dialog/FolderListStore"
@@ -7,10 +7,16 @@ import TodoListFolder from "entities/TodoListFolder"
 import { focusWithStartingCaret, removeItemFromArray } from "components/util/util"
 import { AppBarContainerWithDrawerStore } from "components/material-ui-app-bar-container/AppBarContainerWithDrawerStore"
 import { messageYesNo, snackbar } from "components/material-ui-modals"
+import DisposableReactionsStore from "mobx-store-utils/dist/DisposableReactionsStore"
 
 type TodoListOrListFolder = TodoList | TodoListFolder
 
 export class RootStore {
+    static reactions(store: RootStore, disposableStore: DisposableReactionsStore) {
+        disposableStore.registerReaction(() => store.todoListsAndFolders as IObservableArray<TodoListOrListFolder>,
+            () => store.appBarStore?.setDrawerWidth()
+        )
+    }
 
     constructor() {
         this.todoListsAndFolders = [
@@ -34,33 +40,32 @@ export class RootStore {
                 new Todo("Wash my feet"),
             ]),
         ]
-        observe(this.todoListsAndFolders as IObservableArray<TodoListOrListFolder>, () => setTimeout(() => {
-            this.appBarStore?.setDrawerWidth()
-        }))
+
         this.folderStore = new FolderListStore(this)
+        makeAutoObservable(this)
     }
 
     folderStore: FolderListStore
 
-    @observable todoListsAndFolders: TodoListOrListFolder[]
+    todoListsAndFolders: TodoListOrListFolder[]
 
-    @action selectTodoList = (list: TodoList) => {
+     selectTodoList = (list: TodoList) => {
         this.selectedTodoList = list
         setTimeout(() => {
             this.newTodoFocus()
         });
     }
-    @observable selectedTodoList?: TodoList
+    selectedTodoList?: TodoList
 
-    @computed get titlePrefix() {
+     get titlePrefix() {
         return (this.selectedTodoList && (" - " + this.selectedTodoList.name)) || ""
     }
 
-    @action addNewFolder(folder: TodoListFolder) {
+     addNewFolder(folder: TodoListFolder) {
         this.todoListsAndFolders.push(folder)
     }
 
-    @action deleteFolder = async (listFolder: TodoListFolder) => {
+     deleteFolder = async (listFolder: TodoListFolder) => {
 
         if (await messageYesNo({
             title: "Folder deletion",
@@ -71,7 +76,7 @@ export class RootStore {
         }
     }
 
-    @action deleteList = async (list: TodoList, folder?: TodoListFolder) => {
+     deleteList = async (list: TodoList, folder?: TodoListFolder) => {
 
         if (await messageYesNo({
             title: "List deletion",
@@ -85,7 +90,7 @@ export class RootStore {
         }
     }
 
-    @action addNewList(list: TodoList, folder?: TodoListFolder) {
+     addNewList(list: TodoList, folder?: TodoListFolder) {
         if (folder) {
             folder.lists.push(list)
             this.appBarStore?.setDrawerWidth()
